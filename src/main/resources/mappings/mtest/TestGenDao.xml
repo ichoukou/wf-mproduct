@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="www.wanfin.com.mtest.dao.TestGenDao">
+
+	<select id="queryObject" resultType="www.wanfin.com.mtest.entity.TestGenEntity">
+		select * from test_gen where user_id = #{value}
+	</select>
+
+	<select id="queryList" resultType="www.wanfin.com.mtest.entity.TestGenEntity">
+		select * from test_gen 
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from test_gen 
+	</select>
+	 
+	<insert id="save" parameterType="www.wanfin.com.mtest.entity.TestGenEntity" useGeneratedKeys="true" keyProperty="userId">
+		insert into test_gen
+		(
+			`username`, 
+			`password`, 
+			`email`, 
+			`mobile`, 
+			`status`, 
+			`create_time`
+		)
+		values
+		(
+			#{username}, 
+			#{password}, 
+			#{email}, 
+			#{mobile}, 
+			#{status}, 
+			#{createTime}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="www.wanfin.com.mtest.entity.TestGenEntity">
+		update test_gen 
+		<set>
+			<if test="username != null">`username` = #{username}, </if>
+			<if test="password != null">`password` = #{password}, </if>
+			<if test="email != null">`email` = #{email}, </if>
+			<if test="mobile != null">`mobile` = #{mobile}, </if>
+			<if test="status != null">`status` = #{status}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}</if>
+		</set>
+		where user_id = #{userId}
+	</update>
+	
+	<delete id="delete">
+		delete from test_gen where user_id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from test_gen where user_id in 
+		<foreach item="userId" collection="array" open="(" separator="," close=")">
+			#{userId}
+		</foreach>
+	</delete>
+
+</mapper>
